@@ -15,7 +15,7 @@ mycursor.execute("CREATE DATABASE IF NOT EXISTS mydatabase")
 mycursor.execute("USE mydatabase")
 
 mycursor.execute("""
-CREATE TABLE IF NOT EXISTS booklist(
+CREATE TABLE IF NOT EXISTS Library(
     id INT AUTO_INCREMENT PRIMARY KEY, 
     Title VARCHAR(255) NOT NULL, 
     Author VARCHAR(255) NOT NULL, 
@@ -23,8 +23,8 @@ CREATE TABLE IF NOT EXISTS booklist(
     Release_Year VARCHAR(4)
     )""")
 
-sql = "INSERT INTO Booklist (Title, Author, Genre, Release_Year) VALUES (%s, %s, %s, %s)"
-booklist = [
+sql = "INSERT INTO Library (Title, Author, Genre, Release_Year) VALUES (%s, %s, %s, %s)"
+Library = [
     ('To Kill a Mockingbird', 'Harper Lee', 'Fiction', '1960'),
     ('1984', 'George Orwell', 'Dystopian', '1949'),
     ('The Catcher in the Rye', 'J.D. Salinger', 'Fiction', '1951'),
@@ -68,7 +68,7 @@ booklist = [
     ('The Giver', 'Lois Lowry', 'Dystopian', '1993')
 ]
 
-mycursor.executemany(sql, booklist)
+mycursor.executemany(sql, Library)
 
 mydb.commit()
 
