@@ -58,8 +58,8 @@ def add_book():
         mydb.commit()
         print("Book added successfully!")
 
-    except Error as e:
-        print(f"Error: {e}")
+    except:
+        print("Book added unsuccessfully")
     pass
 
 def remove_book():
@@ -86,8 +86,8 @@ def remove_book():
         mydb.commit()
         print("Book deleted successfully!")
         
-    except Error as e:
-        print(f"Error: {e}")
+    except:
+        print("Book Not Found!")
     pass
 
 def search_book():
@@ -100,9 +100,9 @@ def search_book():
         database="mydatabase"
         )
         
-        book = input("Enter book title: ")
+        Book = input("Enter book title: ")
         
-        sql = "SELECT id FROM Library WHERE Title = book"
+        sql = "SELECT id FROM Library WHERE Title = Book"
         
         mycursor = mydb.cursor()
         mycursor.execute(sql)
@@ -113,8 +113,8 @@ def search_book():
 
         mydb.commit()
     
-    except Error as e:
-        print(f"Error: {e}")
+    except:
+        print("Book Not Found!")
         
     pass
 
@@ -144,14 +144,14 @@ def generate_reports():
             
         mydb.commit()
    
-    except Error as e:
-        print(f"Error: {e}")
+    except:
+        print("Error")
         
     pass
 
 def user_interface():
     print("\nUser Menu")
-    print("1.Check-in a Book")
+    print("1. Check-in a Book")
     print("2. Check-out a Book")
     print("3. Search for a Book")
     choice = input("Please select an option (1/2/3): ")
@@ -165,7 +165,6 @@ def user_interface():
     else:
         print("Invalid choice. Please select 1, 2, 3, or 4.")
         user_interface()
-
 
 
 
@@ -190,8 +189,8 @@ def check_in_book():
         mydb.commit()
         print("Book returned successfully!")
     
-    except Error as e:
-        print(f"Error: {e}")
+    except:
+        print("Book Not Found!")
     
     pass
 
@@ -214,8 +213,8 @@ def check_out_book():
         mydb.commit()
         print("Book borrowed successfully!")
     
-    except Error as e:
-        print(f"Error: {e}")
+    except:
+        print("Book Not Found!")
     
     pass
 

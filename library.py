@@ -17,7 +17,7 @@ mycursor.execute("USE mydatabase")
 mycursor.execute("""
 CREATE TABLE IF NOT EXISTS Library(
     id INT AUTO_INCREMENT PRIMARY KEY, 
-    Title VARCHAR(255) NOT NULL, 
+    Title VARCHAR(255) NOT NULL UNIQUE, 
     Author VARCHAR(255) NOT NULL, 
     Genre VARCHAR(100), 
     Release_Year VARCHAR(4)
