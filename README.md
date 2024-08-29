@@ -17,7 +17,7 @@ This project is a Library Management System that provides both a librarian inter
 
 ### Requirement:
 - Python 3.11.0
-- 
+  
 ## Run the app
 
 Clone this repo then `cd Library-Management-System`.
