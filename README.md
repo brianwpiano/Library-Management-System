@@ -17,6 +17,9 @@ This project is a Library Management System that provides both a librarian inter
 
 ### Project Screenshot
 ![Alt text](https://github.com/brianwpiano/Library-Management-System/blob/main/1.png)
+![Alt text](https://github.com/brianwpiano/Library-Management-System/blob/main/2.png)
+![Alt text](https://github.com/brianwpiano/Library-Management-System/blob/main/3.png)
+![Alt text](https://github.com/brianwpiano/Library-Management-System/blob/main/4.png)
 
 ### Requirement:
 - Python 3.11.0
