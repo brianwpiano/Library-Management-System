@@ -170,8 +170,11 @@ def check_in_book():
         mydb = sqlfunction()
         
         book = input("Enter book title: ")
-        sql = "UPDATE Library SET availability = 'YES' WHERE Title = %s"
-        values = (book,)
+        return_date = datetime.now()
+        sql = """
+        UPDATE Library 
+        SET availability = 'YES', Return_Date = %s WHERE Title = %s;"""
+        values = (return_date.date(), book)
         
         mycursor = mydb.cursor()
         mycursor.execute(sql, values)
