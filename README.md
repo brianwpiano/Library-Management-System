@@ -16,7 +16,7 @@ This project is a Library Management System that provides both a librarian inter
 - All data is stored in a local MySQL server for efficient data management and retrieval. (CRUD)
 
 ### Project Screenshot
-![Alt text]([https://github.com/ashnernovilla/First-Project-08242024/blob/main/Screen%20Shot%202024-08-24.png?raw=true]
+![Alt text](https://github.com/brianwpiano/Library-Management-System/blob/main/1.png)
 
 ### Requirement:
 - Python 3.11.0
