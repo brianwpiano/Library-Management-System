@@ -85,12 +85,16 @@ def remove_book():
             DELETE FROM Library Where Title = %s AND Author = %s AND Genre = %s AND Release_Year = %s
         '''
             
-        values = (Title, Author, Genre, Release_Year, )
+        values = (Title, Author, Genre, Release_Year,)
         
         mycursor = mydb.cursor()
         mycursor.execute(sql, values)
         mydb.commit()
-        print("Book deleted successfully!")
+        
+        if mycursor.rowcount > 0:
+            print("Book deleted successfully!")
+        else:
+            print("Book not found.")
         
     except:
         print("Error Connection in MySQL Server for remove_book Function")
@@ -110,11 +114,12 @@ def search_book():
         mycursor.execute(sql, cond)
         myresult = mycursor.fetchall()
         
-        for x in myresult:
-            print(x)
+        if myresult:
+            for x in myresult:
+                print(x)
+        else:
+            print("Book not found.")
 
-        mydb.commit()
-    
     except:
         print("Error Connection in MySQL Server for search_book Function")
         raise TypeError
