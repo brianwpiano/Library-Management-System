@@ -183,6 +183,7 @@ def user_interface():
         print("1. Check-in a Book")
         print("2. Check-out a Book")
         print("3. Search for a Book")
+        print("4. Logout")
         choice = input("Please select an option (1/2/3): ")
 
         if choice == '1':
@@ -191,6 +192,8 @@ def user_interface():
             check_out_book()
         elif choice == '3':
             search_book()
+        elif choice == '4':
+            main()
         else:
             print("Invalid choice. Please select 1, 2, 3, or 4.")
             user_interface()
