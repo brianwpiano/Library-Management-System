@@ -1,4 +1,15 @@
-from library import Library
+# from library import Library
+import mysql.connector
+
+def sqlfunction():
+    mydb = mysql.connector.connect(
+    host="localhost",
+    user="brian",
+    password="apple123",
+    database="mydatabase"
+    )
+    
+    return mydb
 
 def main():
     print("Welcome to the Library Management System")
@@ -15,34 +26,39 @@ def main():
         main()
 
 def librarian_interface():
-    print("\nLibrarian Menu")
-    print("1. Add a Book")
-    print("2. Remove a Book")
-    print("3. Search for a Book")
-    print("4. Generate Reports")
-    choice = input("Please select an option (1/2/3/4): ")
+    while True:
+        print("\nLibrarian Menu")
+        print("1. Add a Book")
+        print("2. Remove a Book")
+        print("3. Search for a Book")
+        print("4. Generate Reports")
+        print("5. Logout")
+        choice = input("Please select an option (1/2/3/4/5): ")
 
-    if choice == '1':
-        add_book()
-    elif choice == '2':
-        remove_book()
-    elif choice == '3':
-        search_book()
-    elif choice == '4':
-        generate_reports()
-    else:
-        print("Invalid choice. Please select 1, 2, 3, or 4.")
-        librarian_interface()
+        if choice == '1':
+            add_book()
+        elif choice == '2':
+            remove_book()
+        elif choice == '3':
+            search_book()
+        elif choice == '4':
+            generate_reports()
+        elif choice == '5':
+            main()
+        else:
+            print("Invalid choice. Please select 1, 2, 3, 4 or 5.")
+            librarian_interface()
 
 def add_book():
     try:
-        import mysql.connector
-        mydb = mysql.connector.connect(
-        host="localhost",
-        user="brian",
-        password="apple123",
-        database="mydatabase"
-        )
+        # mydb = mysql.connector.connect(
+        # host="localhost",
+        # user="brian",
+        # password="apple123",
+        # database="mydatabase"
+        # )
+        
+        mydb = sqlfunction()
         
         Title = input("Enter book title: ")
         Author = input("Enter book author: ")
@@ -51,6 +67,7 @@ def add_book():
 
         sql = """INSERT INTO library (Title, Author, Genre, Release_Year)
                  VALUES (%s, %s, %s, %s)"""
+                 
         values = (Title, Author, Genre, Release_Year)
         
         mycursor = mydb.cursor()
@@ -59,27 +76,33 @@ def add_book():
         print("Book added successfully!")
 
     except:
-        print("Book added unsuccessfully")
-    pass
+        print("Error Connection in MySQL Server for add_book Function")
+        raise TypeError
 
 def remove_book():
     try:
-        import mysql.connector
-        mydb = mysql.connector.connect(
-        host="localhost",
-        user="brian",
-        password="apple123",
-        database="mydatabase"
-        )
+        # mydb = mysql.connector.connect(
+        # host="localhost",
+        # user="brian",
+        # password="apple123",
+        # database="mydatabase"
+        # )
+        
+        mydb = sqlfunction()
         
         Title = input("Enter book title: ")
         Author = input("Enter book author: ")
         Genre = input("Enter book genre: ")
         Release_Year = input("Enter book release year: ")
         
-        sql = """DELETE FROM Library (Title, Author, Genre, Release_Year)
-             VALUES (%s, %s, %s, %s)"""
-        values = (Title, Author, Genre, Release_Year)
+        # sql = """DELETE FROM Library (Title, Author, Genre, Release_Year)
+        #      VALUES (%s, %s, %s, %s)"""
+        
+        sql = '''
+            DELETE FROM Library Where Title = %s AND Author = %s AND Genre = %s AND Release_Year = %s
+        '''
+            
+        values = (Title, Author, Genre, Release_Year, )
         
         mycursor = mydb.cursor()
         mycursor.execute(sql, values)
@@ -87,25 +110,31 @@ def remove_book():
         print("Book deleted successfully!")
         
     except:
-        print("Book Not Found!")
-    pass
-
+        print("Error Connection in MySQL Server for remove_book Function")
+        raise TypeError
+        
 def search_book():
     try:
-        import mysql.connector
-        mydb = mysql.connector.connect(
-        host="localhost",
-        user="brian",
-        password="apple123",
-        database="mydatabase"
-        )
+        # mydb = mysql.connector.connect(
+        # host="localhost",
+        # user="brian",
+        # password="apple123",
+        # database="mydatabase"
+        # )
+        
+        mydb = sqlfunction()
         
         Book = input("Enter book title: ")
         
-        sql = "SELECT id FROM Library WHERE Title = Book"
-        
         mycursor = mydb.cursor()
-        mycursor.execute(sql)
+        
+        sql = "SELECT * FROM mydatabase.library WHERE Title = %s"
+        cond = (book, )
+        
+        # sql = "SELECT * FROM mydatabase.library WHERE Title = book"
+        
+        
+        mycursor.execute(sql, cond)
         myresult = mycursor.fetchall()
         
         for x in myresult:
@@ -114,19 +143,19 @@ def search_book():
         mydb.commit()
     
     except:
-        print("Book Not Found!")
-        
-    pass
+        print("Error Connection in MySQL Server for search_book Function")
+        raise TypeError
 
 def generate_reports():
     try:
-        import mysql.connector
-        mydb = mysql.connector.connect(
-        host="localhost",
-        user="brian",
-        password="apple123",
-        database="mydatabase"
-        )
+        # mydb = mysql.connector.connect(
+        # host="localhost",
+        # user="brian",
+        # password="apple123",
+        # database="mydatabase"
+        # )
+        
+        mydb = sqlfunction()
         
         mycursor = mydb.cursor()
         mycursor.execute("SELECT * FROM Library WHERE availability LIKE 'YES")
@@ -145,39 +174,39 @@ def generate_reports():
         mydb.commit()
    
     except:
-        print("Error")
-        
-    pass
+        print("Error Connection in MySQL Server for generate_reports Function")
+        raise TypeError
 
 def user_interface():
-    print("\nUser Menu")
-    print("1. Check-in a Book")
-    print("2. Check-out a Book")
-    print("3. Search for a Book")
-    choice = input("Please select an option (1/2/3): ")
+    while True:
+        print("\nUser Menu")
+        print("1. Check-in a Book")
+        print("2. Check-out a Book")
+        print("3. Search for a Book")
+        choice = input("Please select an option (1/2/3): ")
 
-    if choice == '1':
-        check_in_book()
-    elif choice == '2':
-        check_out_book()
-    elif choice == '3':
-        search_book()
-    else:
-        print("Invalid choice. Please select 1, 2, 3, or 4.")
-        user_interface()
-
-
+        if choice == '1':
+            check_in_book()
+        elif choice == '2':
+            check_out_book()
+        elif choice == '3':
+            search_book()
+        else:
+            print("Invalid choice. Please select 1, 2, 3, or 4.")
+            user_interface()
 
 
 def check_in_book():
     try:
-        import mysql.connector
-        mydb = mysql.connector.connect(
-        host="localhost",
-        user="brian",
-        password="apple123",
-        database="mydatabase"
-        )
+        # import mysql.connector
+        # mydb = mysql.connector.connect(
+        # host="localhost",
+        # user="brian",
+        # password="apple123",
+        # database="mydatabase"
+        # )
+        
+        mydb = sqlfunction()
         
         book = input("Enter book title: ")
         sql = "UPDATE Library SET availability = 'YES' WHERE Title = book;"
@@ -190,19 +219,20 @@ def check_in_book():
         print("Book returned successfully!")
     
     except:
-        print("Book Not Found!")
-    
-    pass
+        print("Error Connection in MySQL Server for check_in_book Function")
+        raise TypeError
 
 def check_out_book():
     try:
-        import mysql.connector
-        mydb = mysql.connector.connect(
-        host="localhost",
-        user="brian",
-        password="apple123",
-        database="mydatabase"
-        )
+        # import mysql.connector
+        # mydb = mysql.connector.connect(
+        # host="localhost",
+        # user="brian",
+        # password="apple123",
+        # database="mydatabase"
+        # )
+        
+        mydb = sqlfunction()
         
         book = input("Enter book title: ")
         sql = "UPDATE Library SET availability = 'NO' WHERE Title = book;"
@@ -214,10 +244,8 @@ def check_out_book():
         print("Book borrowed successfully!")
     
     except:
-        print("Book Not Found!")
-    
-    pass
-
+        print("Error Connection in MySQL Server for check_out_book Function")
+        raise TypeError
 
 if __name__ == "__main__":
     main()

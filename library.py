@@ -2,17 +2,21 @@ import mysql.connector
 
 mydb = mysql.connector.connect(
 host="localhost",
-user="brian",
-password="apple123",
+user="newuser",
+password="Openlab@123",
 )
 
 print (mydb)
 
 mycursor = mydb.cursor()
 
-mycursor.execute("CREATE DATABASE IF NOT EXISTS mydatabase")
+#mycursor.execute("CREATE DATABASE IF NOT EXISTS mydatabase")
+mycursor.execute("DROP DATABASE IF EXISTS mydatabase")
+
+mycursor.execute("CREATE DATABASE mydatabase")
 
 mycursor.execute("USE mydatabase")
+
 
 mycursor.execute("""
 CREATE TABLE IF NOT EXISTS Library(
@@ -22,6 +26,8 @@ CREATE TABLE IF NOT EXISTS Library(
     Genre VARCHAR(100), 
     Release_Year VARCHAR(4)
     )""")
+
+
 
 sql = "INSERT INTO Library (Title, Author, Genre, Release_Year) VALUES (%s, %s, %s, %s)"
 Library = [
