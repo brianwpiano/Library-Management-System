@@ -1,5 +1,5 @@
-# from library import Library
 import mysql.connector
+from datetime import datetime, timedelta
 
 def sqlfunction():
     mydb = mysql.connector.connect(
@@ -51,13 +51,6 @@ def librarian_interface():
 
 def add_book():
     try:
-        # mydb = mysql.connector.connect(
-        # host="localhost",
-        # user="brian",
-        # password="apple123",
-        # database="mydatabase"
-        # )
-        
         mydb = sqlfunction()
         
         Title = input("Enter book title: ")
@@ -81,23 +74,13 @@ def add_book():
 
 def remove_book():
     try:
-        # mydb = mysql.connector.connect(
-        # host="localhost",
-        # user="brian",
-        # password="apple123",
-        # database="mydatabase"
-        # )
-        
         mydb = sqlfunction()
         
         Title = input("Enter book title: ")
         Author = input("Enter book author: ")
         Genre = input("Enter book genre: ")
         Release_Year = input("Enter book release year: ")
-        
-        # sql = """DELETE FROM Library (Title, Author, Genre, Release_Year)
-        #      VALUES (%s, %s, %s, %s)"""
-        
+
         sql = '''
             DELETE FROM Library Where Title = %s AND Author = %s AND Genre = %s AND Release_Year = %s
         '''
@@ -115,24 +98,14 @@ def remove_book():
         
 def search_book():
     try:
-        # mydb = mysql.connector.connect(
-        # host="localhost",
-        # user="brian",
-        # password="apple123",
-        # database="mydatabase"
-        # )
-        
         mydb = sqlfunction()
         
-        Book = input("Enter book title: ")
+        book = input("Enter book title: ")
         
         mycursor = mydb.cursor()
         
-        sql = "SELECT * FROM mydatabase.library WHERE Title = %s"
+        sql = "SELECT id, Title, Author, Genre, Availability, Release_Year FROM Library WHERE Title = %s"
         cond = (book, )
-        
-        # sql = "SELECT * FROM mydatabase.library WHERE Title = book"
-        
         
         mycursor.execute(sql, cond)
         myresult = mycursor.fetchall()
@@ -148,13 +121,6 @@ def search_book():
 
 def generate_reports():
     try:
-        # mydb = mysql.connector.connect(
-        # host="localhost",
-        # user="brian",
-        # password="apple123",
-        # database="mydatabase"
-        # )
-        
         mydb = sqlfunction()
         
         mycursor = mydb.cursor()
@@ -165,7 +131,7 @@ def generate_reports():
             print(f"Books available: {x}")
         
         mycursor = mydb.cursor()
-        mycursor.execute("SELECT * FROM Library WHERE availability != 'YES")
+        mycursor.execute("SELECT * FROM Library WHERE availability != 'YES'")
         books_borrowed = mycursor.fetchall()
         
         for y in books_borrowed:
@@ -201,23 +167,15 @@ def user_interface():
 
 def check_in_book():
     try:
-        # import mysql.connector
-        # mydb = mysql.connector.connect(
-        # host="localhost",
-        # user="brian",
-        # password="apple123",
-        # database="mydatabase"
-        # )
-        
         mydb = sqlfunction()
         
         book = input("Enter book title: ")
-        sql = "UPDATE Library SET availability = 'YES' WHERE Title = book;"
+        sql = "UPDATE Library SET availability = 'YES' WHERE Title = %s"
+        values = (book,)
         
         mycursor = mydb.cursor()
-        mycursor.execute(sql)
+        mycursor.execute(sql, values)
         
-    
         mydb.commit()
         print("Book returned successfully!")
     
@@ -227,24 +185,23 @@ def check_in_book():
 
 def check_out_book():
     try:
-        # import mysql.connector
-        # mydb = mysql.connector.connect(
-        # host="localhost",
-        # user="brian",
-        # password="apple123",
-        # database="mydatabase"
-        # )
-        
         mydb = sqlfunction()
         
         book = input("Enter book title: ")
-        sql = "UPDATE Library SET availability = 'NO' WHERE Title = book;"
+        check_out_date = datetime.now()
+        due_date = check_out_date + timedelta(days=30)
+        
+        sql_update = """
+        UPDATE Library
+        SET Availability = 'NO', Check_Out_Date = %s, Due_Date = %s WHERE Title = %s;"""
+                 
+        values_update = (check_out_date.date(), due_date.date(), book)
         
         mycursor = mydb.cursor()
-        mycursor.execute(sql)
+        mycursor.execute(sql_update, values_update)
         
         mydb.commit()
-        print("Book borrowed successfully!")
+        print(f"Book borrowed successfully! Due date is {due_date.date()}")
     
     except:
         print("Error Connection in MySQL Server for check_out_book Function")
