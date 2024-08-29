@@ -15,12 +15,9 @@ This project is a Library Management System that provides both a librarian inter
 #### Database Management:
 - All data is stored in a local MySQL server for efficient data management and retrieval. (CRUD)
 
-- # Student Grade Management System Project
- 
-This project is a Student Grade Management System that includes interfaces for student login to view scorecards and grades and a teacher interface to assign scores and grades for enrolled students.
-
----
-
+### Requirement:
+- Python 3.11.0
+- 
 ## Run the app
 
 Clone this repo then `cd Library-Management-System`.
