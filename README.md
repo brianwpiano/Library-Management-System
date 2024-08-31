@@ -26,6 +26,7 @@ This project is a Library Management System that provides both a librarian inter
 
 ### Requirement:
 - Python 3.11.0
+- MySQL Connector 8.0.39
   
 ## Run the app
 
