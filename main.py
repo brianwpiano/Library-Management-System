@@ -124,7 +124,7 @@ def generate_reports():
         mydb = sqlfunction()
         
         mycursor = mydb.cursor()
-        mycursor.execute("SELECT * FROM Library WHERE availability LIKE 'YES")
+        mycursor.execute("SELECT * FROM Library WHERE availability LIKE 'YES'")
         books_available = mycursor.fetchall()
         
         for x in books_available:
@@ -150,7 +150,7 @@ def user_interface():
         print("2. Check-out a Book")
         print("3. Search for a Book")
         print("4. Logout")
-        choice = input("Please select an option (1/2/3): ")
+        choice = input("Please select an option (1/2/3/4): ")
 
         if choice == '1':
             check_in_book()
@@ -168,19 +168,32 @@ def user_interface():
 def check_in_book():
     try:
         mydb = sqlfunction()
+        mycursor = mydb.cursor()
         
         book = input("Enter book title: ")
-        return_date = datetime.now()
-        sql = """
-        UPDATE Library 
-        SET availability = 'YES', Return_Date = %s WHERE Title = %s;"""
-        values = (return_date.date(), book)
+        return_date = datetime.now().date()
         
-        mycursor = mydb.cursor()
-        mycursor.execute(sql, values)
+        sql = "SELECT Due_Date FROM Library WHERE Title = %s AND Availability = 'NO';"
+        mycursor.execute(sql, (book,))
+        result = mycursor.fetchone()
         
-        mydb.commit()
-        print("Book returned successfully!")
+        if result:
+            due_date = result[0]
+            if return_date > due_date:
+                overdue_days = (return_date - due_date).days
+                overdue_fee_per_day = 1
+                amount_due = overdue_days * overdue_fee_per_day
+                print(f"Book is overdue by {overdue_days} days. Amount due: ${amount_due}")
+            
+            else:
+                sql_update = """
+                UPDATE Library 
+                SET Availability = 'YES', Return_Date = %s WHERE Title = %s;"""
+                mycursor.execute(sql_update, (return_date, book))
+                mydb.commit()
+                print("Book returned successfully!")
+        else:
+            print("This book was not found or was not checked out.")
     
     except:
         print("Error Connection in MySQL Server for check_in_book Function")
