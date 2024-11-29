@@ -124,14 +124,14 @@ def generate_reports():
         mydb = sqlfunction()
         
         mycursor = mydb.cursor()
-        mycursor.execute("SELECT * FROM Library WHERE availability LIKE 'YES'")
+        mycursor.execute("SELECT id, Title, Author, Genre, Release_Year FROM Library WHERE availability LIKE 'YES'")
         books_available = mycursor.fetchall()
         
         for x in books_available:
             print(f"Books available: {x}")
         
         mycursor = mydb.cursor()
-        mycursor.execute("SELECT * FROM Library WHERE availability != 'YES'")
+        mycursor.execute("SELECT id, Title, Author, Genre, Availability, Release_Year, Check_Out_Date, Due_Date FROM Library WHERE availability != 'YES'")
         books_borrowed = mycursor.fetchall()
         
         for y in books_borrowed:
